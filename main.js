@@ -1,6 +1,7 @@
 //1.- VARIABLES UNIVERSALES
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
+const instructions = document.querySelector('.wrapper')
 let frames = 0
 let score = 0
 let interval;
@@ -9,33 +10,50 @@ const pizzas = []
 //FUNCIONES CONSTRUCTORAS
 class Pusheens {
     constructor () {
-        this.x = 280
+        this.x = 500
         this.y = 450
-        this.width = 140
-        this.height = 140
+        this.width = 110
+        this.height = 110
+        this.health = 40
         this.image1 = new Image()
         this.image1.src = './images/pusheen1.png'
         this.image2 = new Image()
         this.image2.src = './images/pusheen2.png'
         this.image = this.image1
-        // this.img3 = new Image()
-        // this.img.src = './images/pusheen3.png'
-        // this.img4 = new Image()
-        // this.img.src = './images/pusheen4.png'
-        // this.img.onload = () => {
-        //     this.draw()
-        // }
     }
     draw(){
-        if(this.y < 350) this.y += 2;
+        if(this.y < 420) this.y += 8;
         
         if(frames % 25 === 0){
              this.image = this.image == this.image1 ? this.image2 : this.image1;
         }
         ctx.drawImage(this.image, this.x, this.y, this.width,this.height);
     }
+
+    drawHealth(){
+      ctx.fillStyle = '#15C8E0'
+      ctx.fillRect(10, 10, this.health*2, 15)
+    }
+    /////////////////////////////////////////////////////////////////////////////////
     jump(){
-        this.y -= 20   
+        this.y -= 40   
+    }
+    moveFoward(){
+      this.x +=20
+    }
+    moveBackward(){
+      this.x -=20
+    }
+    moveDown(){
+      this.y +=20
+    }
+    isTouching(obstacle) { 
+      return (
+        this.x < obstacle.x + obstacle.width && 
+        this.x + this.width > obstacle.x &&
+        this.y < obstacle.y + obstacle.height && 
+        this.y + this.height > obstacle.y 
+  )
     }
 }
 
@@ -44,34 +62,56 @@ class Dads {
     constructor () {
         this.x = 0
         this.y = 200
-        this.width = 220
-        this.height = 380
+        this.width = 200
+        this.height = 350
+        this.direction = 'right'
         this.image1 = new Image()
         this.image1.src = './images/man-running1.png'
         this.image2 = new Image()
         this.image2.src = './images/man-running2.png'
+        this.image3 = new Image()
+        this.image3.src = './images/mirror-man1.png'
+        this.image4 = new Image()
+        this.image4.src = './images/mirror-man2.png'
         this.image = this.image1
     }
+
     draw(){
-        //if(this.y < 350) this.y += 2;
-        if(frames % 15 === 0){
-             this.image = this.image == this.image1 ? this.image2 : this.image1;
-        }
-        ctx.drawImage(this.image, this.x, this.y, this.width,this.height);
+      this.direction === 'right' ? this.x +=5 : this.x -=5
+
+      if (this.x < 0 && this.direction=='left') this.direction='right'
+      else if (this.x > canvas.width - this.width && this.direction == 'right') {
+        this.direction = 'left' 
+        this.image==this.image3
+      } 
+
+      if (this.direction =='right' && frames % 15 === 0){
+          this.image = this.image == this.image1 ? this.image2 : this.image1;
+      } else if (this.direction == 'left' && frames %15 ===0) {
+        this.image = this.image == this.image3 ? this.image4 : this.image3;
+      }
+      ctx.drawImage(this.image, this.x, this.y, this.width,this.height);
     }
+    
 }
 
+
+
+
 class Pizzas {
-    constructor(y, width, height) {
-      this.x = canvas.width
-      this.y = y
-      this.width = width
-      this.height = height
+    constructor() {
+      this.x = Math.floor(Math.random()*canvas.width)
+      this.y = -50
+      this.width = 70
+      this.height = 70
       this.image = new Image()
-      this.image.src = './images/pizza-slice.jpg'
+      this.image.src = './images/pizza.png'
+      this.image.onload = () => {
+      this.draw()
+      }
     }
     draw() {
-      this.x-- 
+      this.y+=4 
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
   }
@@ -115,16 +155,15 @@ const gameboard = new Gameboard()
 const pusheen = new Pusheens()
 const dad = new Dads ()
 
-
 //FUNCIONES
 
-//ARREGLA ESTA CON RESPECTO A TU JUEGO
+function showInstructions(){
+  instructions.classList.toggle('display')
+}
+
 function generatePizzas() {
-    const min = canvas.height-500 
-    const max = canvas.height-20 
-    if (frames % 220 === 0) { 
-      const randomHeight = Math.floor(Math.random() * (max - min))
-      pizzas.push(new Pizzas(0, 50, randomHeight))
+    if (frames % 150 === 0) { 
+      pizzas.push(new Pizzas())
     }
   }
 
@@ -144,13 +183,45 @@ function stop() {
     interval = null
   }
 
-//ARREGLA ESTO CON RESPECTO A TU JUEGO
+  function gameOver() {
+    ctx.font = '70px Courier'
+    ctx.fillStyle = '#E01515'
+    ctx.fillText('Game Over', canvas.width / 2-150, canvas.height/2)
+    clearInterval(interval) 
+    setTimeout(() => {
+      location.reload()
+    }, 3000)
+  }
+
+
 function drawScore() {
-  if (frames % 200 === 0) { 
-      score += 1
-    }
-    ctx.font = '24px Courier'
+    ctx.font = '35px Courier'
     ctx.fillText(score, canvas.width / 2, 50)
+  }
+
+  function checkCollition() {
+
+    if(pusheen.y < 0 ){
+     pusheen.y =0}
+     else if (pusheen.y >canvas.height-pusheen.height){
+       pusheen.y = canvas.height-pusheen.height
+     }
+    else if(pusheen.x >= canvas.width ){
+      pusheen.x = - pusheen.width
+    } else 
+    if (pusheen.x < - pusheen.width)
+      pusheen.x = canvas.width -1
+    
+    
+    if (pusheen.isTouching(dad)) return gameOver()
+
+    
+    pizzas.forEach((pizza, index) => { 
+      if (pusheen.isTouching(pizza)){
+        pizzas.splice(index,1)
+        score += 10
+      }
+    })
   }
 
 
@@ -161,20 +232,24 @@ function drawScore() {
     pusheen.draw()
     dad.draw()
     generatePizzas()
-    // drawPizzas()
-    // checkCollition()
+    drawPizzas()
+    checkCollition()
     drawScore()
   }
 
 
-//ARREGLA ESTO CON RESPECTO A TU JUEGO
+
   document.onkeydown = e => {
     e.preventDefault()
     switch (e.keyCode) {
       //espacio (pausa) pon intervalo en null
       case 32:
-        // pusheen.jump()
-        break
+      if (interval){
+        stop()
+      } else {
+        start()
+      }
+      break
       
         //flecha arriba
       case 38:
@@ -183,6 +258,15 @@ function drawScore() {
 
         //Flecha derecha
       case 39:
+          pusheen.moveFoward()
+          break
+        //Flecha izquierda  
+      case 37:
+          pusheen.moveBackward()
+          break
+        //Flecha abajo
+      case 40:
+          pusheen.moveDown()
           break
   
       default:

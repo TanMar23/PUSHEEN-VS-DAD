@@ -11,46 +11,28 @@
 </head>
 <body>  
 
-    <header>
-        <div = Title>
+    <div id = "main">
             <h1>PUSHEEN VS DAD</h1>
+        <div id="game-board">
+             <canvas width="1000" height="600"></canvas>
+                            
         </div>
-        <div>
-            <button id='start-button'>
-                    <img src="./images/start.png" alt="start logo" width="110px" height="80px">        
-            </button>
-        </div>
-
-
-
-
-        
-        <div>
-            <button id="instructions" class="uk-button uk-button-danger" uk-toggle="target: #inst" type="button"><b>INSTRUCTIONS</b></button>
-                <div id="inst" uk-modal>
-                    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-                      <button class="uk-modal-close-default" type="button" uk-close></button>
-                      <h3 class="uk-modal-title">Instructions</h3>
-                      <p>Help pusheen runaway from the enemy. <br>
-                        Use the space bar to jump. <br>
-                        Use the up and down arrows to shoot. <br>
-                        Use the left and right arrows to move. <br>
-                        <!-- <img src="./images/keyboard-arrows.png" alt="arrows"><br> -->
-                        Multiplayer mode is by turns.<br>
-                        Good luck!</p>
-                  </div>
-            </div>
-        </div>
-
-    </header>
-
-    <div id="game-board">
-        <canvas width="1000" height="600"></canvas>
+        <div id="buttons">
+            <button class="buttons" id="Instructions" onclick={showInstructions()} > Instructions </button>
+            <button class="buttons" id="start-button"> Start </button>   
+         </div>
 
     </div>
+
+
+    <div class="wrapper display">   
+        <p>Help pusheen runaway from the enemy. <br> Use the space bar to pause. <br> Use all arrows to move. <br>
+Good luck!</p>
+    </div>
+
+
+   
           
-    </div>
-
     <script src="./main.js"></script>
 </body>
 </html>

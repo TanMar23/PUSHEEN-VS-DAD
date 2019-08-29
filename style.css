@@ -1,49 +1,89 @@
+@import url('https://fonts.googleapis.com/css?family=Monoton&display=swap');
+html {
+    font-family: 'Monoton', cursive;
+}
+
+
 *{
     margin: 0;
     padding: 0;
 }
 
-body{
-  
-   background-color: #D8BFD8
-}
-
-header{
-    /* background-image: url(./images/recibidor.jpg);
-    background-size: cover;
-    background-repeat: no-repeat; */
-    padding: 8% 0%;
-    margin: 8% 0%;
+#main {
+    background-color: rgb(216, 191, 216);
     display: flex;
-    flex-flow: column;
-    justify-content: center;
-    color: white;
-}
-
-
-
-#game-board{
-    background-repeat: no-repeat;
-}
-h1{
- font-size: 55px;
- font-family: 'Monoton', cursive;
- text-align: center
-}
-
-#start-button{
-    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+
+#buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 500px
+}
+
+.buttons{
+    background-color: magenta;
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    border: none;
+    height: 50px;
+    padding: 0 10px;
+    font-size: 32px;
+    font-family: 'Monoton', cursive;
+}
+
+
+.buttons:hover{
+    background-color: blueviolet;
     cursor: pointer;
 }
-/* 
-#pusheen-gif{
-    display: flex;
-    justify-content: center;
-    
-} */
 
-canvas{
-    border: 2px solid black;
+.buttons:active{
+    border: 2px solid grey;
+}
+
+
+h1{
+    font-weight: bold;
+    font-size: 50px;
+    text-align: center;
+}
+
+
+.wrapper{
+    height: 50vh;
+    width: 50%;
+    margin: auto;
+    background-color: #0C3587;
+    z-index: 1;
+    position: absolute;
+    top: 27%;
+    left: 25%;
+    justify-content: center;
+    align-items: center;
+}
+
+.display{
+    display: none
+}
+
+
+p{
+    padding: 100px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    text-align: center;
+    color: white;
+    line-height: 50px;
 }
