@@ -5,6 +5,7 @@ const instructions = document.querySelector('.wrapper')
 const startAudio = document.querySelector('#start-song')
 const looserAudio = document.querySelector('#game-over')
 const winnerAudio = document.querySelector('#winner')
+// const winnerGif =document.querySelector('#win-gif')
 let frames = 0
 let score = 0
 let interval;
@@ -204,6 +205,8 @@ function stop() {
 
 
   function youWon(){
+    let image = new Image()
+    image.src = './images/you-win.gif'
     winnerAudio.play()
     ctx.font = '80px Courier'
     ctx.fillStyle = '#1556E0'
@@ -214,6 +217,10 @@ function stop() {
       location.reload()
     }, 4000)
     startAudio.pause()
+
+    image.onload = () => {
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+    } 
   }
 
 
