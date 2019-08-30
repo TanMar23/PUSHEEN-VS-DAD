@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
 html {
     font-family: 'Monoton', cursive;
 }
@@ -30,13 +31,13 @@ html {
 }
 
 .buttons{
-    background-color: magenta;
+    background-color: mediumvioletred;
     color: aliceblue;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: none;
+    border: solid 2px purple;
     height: 50px;
     padding: 0 10px;
     font-size: 32px;
@@ -56,10 +57,14 @@ html {
 
 h1{
     font-weight: bold;
-    font-size: 50px;
+    font-size: 70px;
     text-align: center;
 }
 
+span{
+    margin: 12px;
+    padding: 12px;
+}
 
 .wrapper{
     height: 50vh;
@@ -80,12 +85,22 @@ h1{
 
 
 p{
-    padding: 100px;
+    padding: 50px;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 30px;
+    font-size: 40px;
+    font-weight: bolder;
     text-align: center;
     color: white;
     line-height: 50px;
 }
 
-/* kk */
+canvas{
+    border: solid 3px purple;
+    transition: filter 0.5s ease-in;
+}
+
+.looser{
+    filter: grayscale(1);
+}
+
+

@@ -12,7 +12,7 @@
 <body>  
 
     <div id = "main">
-            <h1>PUSHEEN VS DAD</h1>
+            <h1>PUSHEEN <span>VS</span> DAD</h1>
         <div id="game-board">
              <canvas width="1000" height="600"></canvas>
                             
@@ -21,17 +21,20 @@
             <button class="buttons" id="Instructions" onclick={showInstructions()} > Instructions </button>
             <button class="buttons" id="start-button"> Start </button>   
          </div>
-
     </div>
 
 
     <div class="wrapper display">   
-        <p>Help pusheen runaway from the enemy. <br> Use the space bar to pause. <br> Use all arrows to move. <br>
+        <p>Help pusheen runaway from the enemy and collect as <br> many pizzas as you can. <br> Use the space bar to pause. <br> Use all arrows to move. <br>
 Good luck!</p>
     </div>
 
-
-   
+<!-- Audios -->
+    <section>
+        <audio src="./game-song.mp3" id='start-song'></audio>
+        <audio src="./game-over.mp3" id='game-over'></audio>
+        <audio src="./winner.mp3" id='winner'></audio>
+    </section>
           
     <script src="./main.js"></script>
 </body>

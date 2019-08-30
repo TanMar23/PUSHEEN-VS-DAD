@@ -2,6 +2,9 @@
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 const instructions = document.querySelector('.wrapper')
+const startAudio = document.querySelector('#start-song')
+const looserAudio = document.querySelector('#game-over')
+const winnerAudio = document.querySelector('#winner')
 let frames = 0
 let score = 0
 let interval;
@@ -22,7 +25,7 @@ class Pusheens {
         this.image = this.image1
     }
     draw(){
-        if(this.y < 420) this.y += 8;
+        if(this.y < 420) this.y += 4;
         
         if(frames % 25 === 0){
              this.image = this.image == this.image1 ? this.image2 : this.image1;
@@ -34,7 +37,7 @@ class Pusheens {
       ctx.fillStyle = '#15C8E0'
       ctx.fillRect(10, 10, this.health*2, 15)
     }
-    /////////////////////////////////////////////////////////////////////////////////
+    
     jump(){
         this.y -= 40   
     }
@@ -77,7 +80,7 @@ class Dads {
     }
 
     draw(){
-      this.direction === 'right' ? this.x +=5 : this.x -=5
+      this.direction === 'right' ? this.x +=4 : this.x -=4
 
       if (this.x < 0 && this.direction=='left') this.direction='right'
       else if (this.x > canvas.width - this.width && this.direction == 'right') {
@@ -135,6 +138,7 @@ class Gameboard {
           this.img2.onload = () => {
             this.draw()
           }
+    
         }
     draw() {
         this.x--
@@ -154,6 +158,7 @@ class Gameboard {
 const gameboard = new Gameboard() 
 const pusheen = new Pusheens()
 const dad = new Dads ()
+
 
 //FUNCIONES
 
@@ -175,7 +180,8 @@ function drawPizzas() {
 
 function start() {
     interval = setInterval(update, 1000 / 60) 
-  }
+    startAudio.play()
+}
 
 
 function stop() {
@@ -184,20 +190,39 @@ function stop() {
   }
 
   function gameOver() {
+    looserAudio.play()
     ctx.font = '70px Courier'
     ctx.fillStyle = '#E01515'
     ctx.fillText('Game Over', canvas.width / 2-150, canvas.height/2)
+    canvas.classList.add('looser')
     clearInterval(interval) 
     setTimeout(() => {
       location.reload()
     }, 3000)
+    startAudio.pause()
+  }
+
+
+  function youWon(){
+    winnerAudio.play()
+    ctx.font = '80px Courier'
+    ctx.fillStyle = '#1556E0'
+    ctx.fillText('You won!!', canvas.width / 2-150, canvas.height/2)
+    canvas.classList.add('winner')
+    clearInterval(interval)
+    setTimeout(()=>{
+      location.reload()
+    }, 4000)
+    startAudio.pause()
   }
 
 
 function drawScore() {
     ctx.font = '35px Courier'
-    ctx.fillText(score, canvas.width / 2, 50)
+    ctx.fillText(`Your Score: ${score}`, canvas.width / 2, 50)
   }
+
+
 
   function checkCollition() {
 
@@ -214,6 +239,8 @@ function drawScore() {
     
     
     if (pusheen.isTouching(dad)) return gameOver()
+
+    if(score=== 50) return youWon()
 
     
     pizzas.forEach((pizza, index) => { 
@@ -242,7 +269,7 @@ function drawScore() {
   document.onkeydown = e => {
     e.preventDefault()
     switch (e.keyCode) {
-      //espacio (pausa) pon intervalo en null
+      //espacio (pausa) 
       case 32:
       if (interval){
         stop()
